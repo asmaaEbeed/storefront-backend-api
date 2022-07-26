@@ -1,0 +1,69 @@
+import express, { Request, Response } from 'express'
+import { authMiddleware } from '../middleware/auth'
+import { User, makeUserModel } from '../models/users'
+import { Router } from 'express'
+
+const userStore = new makeUserModel()
+
+const index = async (_req: Request, res: Response) => {
+  const users = await userStore.index()
+  res.json(users)
+}
+
+const show = async (_req: Request, res: Response) => {
+  console.log(_req.params)
+  const user = await userStore.showUser(_req.params.id)
+  res.json(user)
+}
+
+const edit = async (req: Request, res: Response) => {
+  try {
+    const user: Omit<User, 'id'> = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      password: req.body.password,
+      email: req.body.email
+    }
+    const editedUser = await userStore.update(req.params.id, user)
+    res.json(editedUser)
+  } catch (err) {
+    res.status(400)
+    res.json(err)
+  }
+}
+const create = async (req: Request, res: Response) => {
+  try {
+    const user: Omit<User, 'id'> = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      password: req.body.password,
+      email: req.body.email
+    }
+    const newUser = await userStore.create(user)
+    res.json(newUser)
+  } catch (err) {
+    res.status(400)
+    res.json(err)
+  }
+}
+
+const destroy = async (req: Request, res: Response) => {
+  try {
+    const deleted = await userStore.remove(req.body.id)
+    res.json(deleted)
+  } catch (err) {
+    res.status(400)
+    res.json(err)
+  }
+}
+
+
+const user_routes = (app: express.Application) =>{
+    app.get('/users', authMiddleware, index)
+    app.get('/user/:id', authMiddleware, show)
+    app.post('/user', authMiddleware, create)
+    app.put('/user/:id', authMiddleware, edit)
+    app.delete('/user', authMiddleware, destroy)
+}
+
+export default user_routes;
