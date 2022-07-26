@@ -8,11 +8,13 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 ### Products
-- Index 
+- Index `'/products [GET]`
 ![get all Products](./apis-postman/Products-getallproducts.jpg)
-- Show (args: product id)
+
+- Show (args: product id) `'/product/:id [GET]`
 ![show product](./apis-postman/Products-show-product.jpg)
-- Create (args: Product)[token required]
+
+- Create (args: Product)[token required] `'/product [POST]`
 ![create product](./apis-postman/Product-post-authorized.jpg)
 
 - [OPTIONAL] Top 5 most popular products 
@@ -20,16 +22,14 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 
 ### Users
-- Index [token required]
+- Index [token required] `'/orders[GET]`
 ![get all users](./apis-postman/Users-getallusers-authorized.jpg)
 
-- Show (args: id)[token required]
+- Show [token required] : `'/order/:id [GET]`
 ![Show user data](./apis-postman/Users-getallusers-authorized.jpg)
 
-- Create (args: User)[token required]
+- Create (args: User)[token required] `'/order [POST]`
 ![Create new user](./apis-postman/Users-create-newuser.jpg)
-
-
 
 
 ### Orders endpoints
@@ -45,7 +45,8 @@ Token is unauthorized
 - Delete product [token required]: `'/order' [DELETE]`
 ![Delete product](./apis-postman/Order-delete.jpg)
 
-
+- Add product to order [token required]: `'/order/:id/products [POST]`
+![Add product to order](./apis-postman/Ordered-Product-authorized.jpg)
 
 - Active Order by user (args: user id) [token required] : `'orders/users/:userId/active' [GET]`
 - Completed Orders by user (args: user id) [token required] `'orders/users/:userId/completed' [GET]`
