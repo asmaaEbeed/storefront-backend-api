@@ -58,19 +58,4 @@ app.get('/', function (req, res) {
 app.listen(PORT, function () {
     console.log("Server is starting at prot:".concat(PORT));
 });
-// const userData = {
-//   firstName: 'Mody',
-//   lastName: 'negm',
-//   password: 'password',
-//   email: 'mody@gmail.com'
-// }
-// async function main() {
-//   const token = await authenticateModel.create(userData);
-//   const user = await authenticateModel.login({email: userData.email, password: userData.password})
-//   const isValid = authenticateModel.verify(user.token)
-//   console.log(isValid)
-//   const newToken = await authenticateModel.login({ email: 'mody@gmail.com', password: 'password' })
-//   console.log({ token }, { newToken })
-// }
-// main()
 exports.default = app;
