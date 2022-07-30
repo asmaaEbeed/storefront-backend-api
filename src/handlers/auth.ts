@@ -38,8 +38,8 @@ const login = async (req: Request, res: Response) => {
   }
 }
 const auth_routes = (app: express.Application) => {
-  app.post('/register', authMiddleware, create)
-  app.post('/login', authMiddleware, login)
+  app.post('/register', create)
+  app.post('/login', login)
 }
 
 export default auth_routes
