@@ -154,6 +154,38 @@ var OrderStore = /** @class */ (function () {
             });
         });
     };
+    OrderStore.prototype.getActiveOrder = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connection, sql, result, orderResult, err_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        connection = _a.sent();
+                        sql = "SELECT * FROM orders WHERE user_id = ($1) AND status = 'active'";
+                        return [4 /*yield*/, connection.query(sql, [userId])];
+                    case 2:
+                        result = _a.sent();
+                        orderResult = result.rows[0];
+                        if (orderResult.length === 0) {
+                            connection.release();
+                            throw new Error("there are no active orders for user ".concat(userId));
+                        }
+                        else {
+                            connection.release();
+                            return [2 /*return*/, orderResult];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_5 = _a.sent();
+                        throw new Error("Cannot retrieve active order: ".concat(err_5));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     OrderStore.prototype.updateOrder = function (id, status) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, result;

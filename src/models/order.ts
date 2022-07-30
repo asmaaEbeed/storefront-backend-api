@@ -77,6 +77,25 @@ export class OrderStore {
         }
     }
 
+    async getActiveOrder(userId: number): Promise<Order> {
+        try {
+          const connection = await Client.connect();
+          const sql =
+            "SELECT * FROM orders WHERE user_id = ($1) AND status = 'active'";
+          const result = await connection.query(sql, [userId]);
+          const orderResult = result.rows[0];
+          if(orderResult.length === 0){
+                connection.release();
+                throw new Error(`there are no active orders for user ${userId}`);
+          } else {
+              connection.release();
+              return orderResult;
+          }
+        } catch (err) {
+          throw new Error(`Cannot retrieve active order: ${err}`);
+        }
+      }
+
     async updateOrder(id: string, status: string): Promise<Order>  {
         const connection = await Client.connect();
         try {

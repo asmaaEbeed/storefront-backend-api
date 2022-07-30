@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express'
 import { authMiddleware } from '../middleware/auth'
 import { Order, OrderStore } from '../models/order'
-import { Router } from 'express'
 
 const store = new OrderStore()
 
@@ -47,6 +46,17 @@ const addProduct = async (_req: Request, res: Response) => {
   }
 }
 
+const active = async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const order = await store.getActiveOrder(userId);
+    res.json(order);
+  } catch (err) {
+    res.status(500);
+    res.json(err)
+  }
+};
+
 const destroy = async (req: Request, res: Response) => {
   try {
     const deleted = await store.remove(req.body.id)
@@ -60,6 +70,7 @@ const order_routes = (app: express.Application) => {
   app.get('/orders', authMiddleware, index)
   app.get('/order/:id', authMiddleware, show)
   app.post('/order', authMiddleware, create)
+  app.get('/order/users/:id', authMiddleware, active)
   app.post('/order/:id/products', authMiddleware, addProduct)
   app.delete('/order', authMiddleware, destroy);
 }

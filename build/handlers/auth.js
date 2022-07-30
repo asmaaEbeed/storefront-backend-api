@@ -37,100 +37,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var auth_1 = require("../middleware/auth");
-var users_1 = require("../models/users");
-var userStore = new users_1.makeUserModel();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, userStore.index()];
-            case 1:
-                users = _a.sent();
-                res.json(users);
-                return [2 /*return*/];
-        }
-    });
-}); };
-var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                console.log(_req.params);
-                return [4 /*yield*/, userStore.showUser(_req.params.id)];
-            case 1:
-                user = _a.sent();
-                res.json(user);
-                return [2 /*return*/];
-        }
-    });
-}); };
-var edit = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, editedUser, err_1;
+var auth_2 = require("../services/auth");
+var authService = new auth_2.authenticate();
+var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userData, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user = {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    password: req.body.password,
-                    email: req.body.email
-                };
-                return [4 /*yield*/, userStore.update(req.params.id, user)];
+                return [4 /*yield*/, authService.create({
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        password: req.body.password,
+                        email: req.body.email
+                    })];
             case 1:
-                editedUser = _a.sent();
-                res.json(editedUser);
+                userData = _a.sent();
+                res.json(userData);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
-                res.status(400);
-                res.json(err_1);
+                e_1 = _a.sent();
+                console.error(e_1);
+                res.status(404).send('Failed to create an account');
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-// const create = async (req: Request, res: Response) => {
-//   try {
-//     const user: Omit<User, 'id'> = {
-//       firstName: req.body.firstName,
-//       lastName: req.body.lastName,
-//       password: req.body.password,
-//       email: req.body.email
-//     }
-//     const newUser = await userStore.create(user)
-//     res.json(newUser)
-//   } catch (err) {
-//     res.status(400)
-//     res.json(err)
-//   }
-// }
-var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted, err_2;
+var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var params, userInfo, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, userStore.remove(req.body.id)];
+                params = req.body;
+                return [4 /*yield*/, authService.login({
+                        email: params.email,
+                        password: params.password
+                    })];
             case 1:
-                deleted = _a.sent();
-                res.json(deleted);
+                userInfo = _a.sent();
+                res.json(userInfo);
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
-                res.status(400);
-                res.json(err_2);
+                e_2 = _a.sent();
+                console.error(e_2);
+                res.status(404).send('Failed to login');
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-var user_routes = function (app) {
-    app.get('/users', auth_1.authMiddleware, index);
-    app.get('/user/:id', auth_1.authMiddleware, show);
-    // app.post('/user', authMiddleware, create)
-    app.put('/user/:id', auth_1.authMiddleware, edit);
-    app.delete('/user', auth_1.authMiddleware, destroy);
+var auth_routes = function (app) {
+    app.post('/register', auth_1.authMiddleware, create);
+    app.post('/login', auth_1.authMiddleware, login);
 };
-exports.default = user_routes;
+exports.default = auth_routes;

@@ -220,12 +220,6 @@ Run test with
 
 It sets the environment to `test`, migrates up tables for the test database, run the test then migrate down all the tables for the test database.
 
-!['test 1'](docs/test1.png)
-!['test 2'](docs/test2.png)
-!['test 3'](docs/test3.png)
-
-## Important Notes
-
 ### Environment Variables
 
 Environment variables are set in the `.env` file and added in `.gitignore` so that it won't be added to github. However, I had provided the names of the variables that need to be set above. I also provided the values that were used in development and testing.
@@ -234,9 +228,9 @@ Environment variables are set in the `.env` file and added in `.gitignore` so th
 
 I had set up two databases, one for development and the other for testing. During testing, I had to make sure the testing database is used instead of the developement database.
 
-To acheive this, I set up a variable in the `.env` file which is by default set to `dev`. During testing, the command `yarn test` will set this variable to `testing` in the package.json. Here is the complete command.
-`npm run test-up && cross-env ENVI=test jasmine-ts && npm run test-down`
+To acheive this, I set up a variable in the `.env` file which is by default set to `dev`. During testing, the command `yarn test` will set this variable to `test` in the package.json. Using `set` according using windows and finally drop database after testing.
+ Here is the complete command.
+`set ENV=test&& db-migrate --env test up && jasmine && db-migrate --env test reset&& db:drop test`
 
-The first command migrates all tables then the second command changes the enviroment variable `ENVI` to testing, then the jasmine is run and then after testing, the database is reset.
 
-Note the `cross-env` in command above. Since this may have some issues in Windows, I had to use this pakcage [cross-env](https://www.npmjs.com/package/cross-env) to take care of it. This permits the changing of environment variable this way to work for all platforms
+The first command change environment to test mode and using set for windows then migrates all tables, then the jasmine is run and then after testing, the database is reset, drop database after testing.

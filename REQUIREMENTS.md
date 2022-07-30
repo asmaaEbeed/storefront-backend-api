@@ -28,8 +28,15 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Show [token required] : `'/order/:id [GET]`
 ![Show user data](./apis-postman/Users-getallusers-authorized.jpg)
 
-- Create (args: User)[token required] `'/order [POST]`
+- Create [token required] `'/order [POST]`
 ![Create new user](./apis-postman/Users-create-newuser.jpg)
+
+- Login [token required] `'/login [POST]`
+![Login](./apis-postman/Auth-post-login.jpg)
+
+- Register [token required] `'/register [POST]`
+![Login](./apis-postman/Auth-post-register.jpg)
+
 
 
 ### Orders endpoints

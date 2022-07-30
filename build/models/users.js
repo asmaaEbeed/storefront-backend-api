@@ -35,25 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeUserModel = void 0;
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var database_1 = __importDefault(require("../database"));
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var _a = process.env, PEPPER = _a.BCRYPT_PASSWORD, SALT_ROUNDS = _a.SALT_ROUNDS, TOKEN_SECRET = _a.TOKEN_SECRET;
 if (!PEPPER || !SALT_ROUNDS || !TOKEN_SECRET)
     throw new Error();
@@ -116,77 +103,57 @@ var makeUserModel = /** @class */ (function () {
             });
         });
     };
-    makeUserModel.prototype.create = function (u) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, hash, result, user, token, err_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1.default.connect()];
-                    case 1:
-                        conn = _a.sent();
-                        _a.label = 2;
-                    case 2:
-                        _a.trys.push([2, 4, 5, 6]);
-                        sql = "INSERT INTO users (firstName, lastName, password, email) VALUES($1, $2, $3, $4) RETURNING *";
-                        hash = bcrypt_1.default.hashSync(u.password + PEPPER, Number(SALT_ROUNDS));
-                        return [4 /*yield*/, conn.query(sql, [u.firstName, u.lastName, hash, u.email])];
-                    case 3:
-                        result = _a.sent();
-                        console.log("inserted successfully");
-                        user = result.rows[0];
-                        token = jsonwebtoken_1.default.sign(user, TOKEN_SECRET);
-                        return [2 /*return*/, token];
-                    case 4:
-                        err_3 = _a.sent();
-                        throw new Error("unable create user (".concat(u.email, "): ").concat(err_3));
-                    case 5:
-                        conn.release();
-                        return [7 /*endfinally*/];
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    makeUserModel.prototype.authenticate = function (params) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, _a, hashed, user, isValid, token, err_4;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, database_1.default.connect()];
-                    case 1:
-                        conn = _b.sent();
-                        _b.label = 2;
-                    case 2:
-                        _b.trys.push([2, 5, 6, 7]);
-                        sql = 'SELECT * FROM users WHERE email=($1)';
-                        return [4 /*yield*/, conn.query(sql, [params.email])];
-                    case 3:
-                        result = _b.sent();
-                        console.log(params.password + PEPPER);
-                        if (result.rowCount === 0)
-                            throw new Error("Wrong user name or password");
-                        _a = result.rows[0], hashed = _a.password, user = __rest(_a, ["password"]);
-                        return [4 /*yield*/, bcrypt_1.default.compare(params.password + PEPPER, hashed)];
-                    case 4:
-                        isValid = _b.sent();
-                        if (!isValid)
-                            throw new Error('Wrong userNameor password');
-                        token = jsonwebtoken_1.default.sign(user, TOKEN_SECRET);
-                        return [2 /*return*/, token];
-                    case 5:
-                        err_4 = _b.sent();
-                        throw new Error("Could not login ".concat(params.email, ". Error: ").concat(err_4));
-                    case 6:
-                        conn.release();
-                        return [7 /*endfinally*/];
-                    case 7: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    makeUserModel.prototype.verify = function (token) {
-        return jsonwebtoken_1.default.verify(token, TOKEN_SECRET);
-    };
+    // async create(u: User) {
+    //   const conn = await Client.connect();
+    //   try {
+    //     // const sqlEmail = `SELECT * FROM users WHERE email=$1`
+    //     // const emailValidity = await conn.query(sqlEmail, [u.email]);
+    //     // console.log(emailValidity.rows[0]);
+    //     // if (emailValidity.rows[0]) {
+    //     //   console.log("build");
+    //     //   conn.release();
+    //     //   throw new Error (`User ${u.email} already exist...`)
+    //     // }
+    //       // @ts-ignore
+    //       const sql = `INSERT INTO users (firstName, lastName, password, email) VALUES($1, $2, $3, $4) RETURNING *`
+    //       // const hash = bcrypt.hashSync(u.password + PEPPER, Number(SALT_ROUNDS))
+    //       const result = await conn.query(sql, [u.firstName, u.lastName, u.password, u.email])
+    //       console.log('inserted successfully')
+    //       const user = result.rows[0]
+    //       // const token = jwt.sign(user, TOKEN_SECRET!)
+    //       return user
+    //   } catch (err) {
+    //     throw new Error(`unable create user (${u.email}): ${err}`)
+    //   } finally {
+    //     conn.release()
+    //   }
+    // }
+    // async authenticate(params: LoginParams) {
+    //   const conn = await Client.connect()
+    //   try {
+    //     const sql = 'SELECT * FROM users WHERE email=($1)'
+    //     const result = await conn.query(sql, [params.email])
+    //     console.log(params.password + PEPPER)
+    //     if (result.rowCount === 0) throw new Error("Wrong user name or password");
+    //       const { password: hashed, ...user } = result.rows[0]
+    //       const isValid = await bcrypt.compare(params.password + PEPPER, hashed)
+    //       if (!isValid) throw new Error('Wrong userNameor password')
+    //       const token = jwt.sign(user, TOKEN_SECRET!)
+    //       return token
+    //   }
+    //       // console.log(user)
+    //       // if (bcrypt.compareSync(password + PEPPER, user.password)) {
+    //       //   return user
+    //       // }
+    //   catch (err) {
+    //     throw new Error(`Could not login ${params.email}. Error: ${err}`)
+    //   } finally {
+    //     conn.release()
+    //   }
+    // }
+    // verify(token: string) {
+    //   return jwt.verify(token, TOKEN_SECRET!)
+    // }
     makeUserModel.prototype.update = function (id, user) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, result;
@@ -198,7 +165,7 @@ var makeUserModel = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         _a.trys.push([2, , 4, 5]);
-                        return [4 /*yield*/, connection.query('UPDATE users SET firstName = $1, lastName = $2, email = $3 WHERE id=$4 RETURNING *', [user.firstName, user.lastName, user.email])];
+                        return [4 /*yield*/, connection.query('UPDATE users SET firstName = $1, lastName = $2, email = $3 WHERE id=$4 RETURNING *', [user.firstName, user.lastName, user.email, user.id])];
                     case 3:
                         result = _a.sent();
                         if (result.rowCount === 0)

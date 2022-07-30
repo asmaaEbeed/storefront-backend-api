@@ -31,21 +31,21 @@ const edit = async (req: Request, res: Response) => {
     res.json(err)
   }
 }
-const create = async (req: Request, res: Response) => {
-  try {
-    const user: Omit<User, 'id'> = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      password: req.body.password,
-      email: req.body.email
-    }
-    const newUser = await userStore.create(user)
-    res.json(newUser)
-  } catch (err) {
-    res.status(400)
-    res.json(err)
-  }
-}
+// const create = async (req: Request, res: Response) => {
+//   try {
+//     const user: Omit<User, 'id'> = {
+//       firstName: req.body.firstName,
+//       lastName: req.body.lastName,
+//       password: req.body.password,
+//       email: req.body.email
+//     }
+//     const newUser = await userStore.create(user)
+//     res.json(newUser)
+//   } catch (err) {
+//     res.status(400)
+//     res.json(err)
+//   }
+// }
 
 const destroy = async (req: Request, res: Response) => {
   try {
@@ -61,7 +61,7 @@ const destroy = async (req: Request, res: Response) => {
 const user_routes = (app: express.Application) =>{
     app.get('/users', authMiddleware, index)
     app.get('/user/:id', authMiddleware, show)
-    app.post('/user', authMiddleware, create)
+    // app.post('/user', authMiddleware, create)
     app.put('/user/:id', authMiddleware, edit)
     app.delete('/user', authMiddleware, destroy)
 }

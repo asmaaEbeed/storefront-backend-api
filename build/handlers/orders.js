@@ -115,8 +115,29 @@ var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
+var active = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, order, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                userId = parseInt(req.params.userId);
+                return [4 /*yield*/, store.getActiveOrder(userId)];
+            case 1:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                res.status(500);
+                res.json(err_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted, err_3;
+    var deleted, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -127,9 +148,9 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 res.json(deleted);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400);
-                res.json(err_3);
+                res.json(err_4);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -139,6 +160,7 @@ var order_routes = function (app) {
     app.get('/orders', auth_1.authMiddleware, index);
     app.get('/order/:id', auth_1.authMiddleware, show);
     app.post('/order', auth_1.authMiddleware, create);
+    app.get('/order/users/:id', auth_1.authMiddleware, active);
     app.post('/order/:id/products', auth_1.authMiddleware, addProduct);
     app.delete('/order', auth_1.authMiddleware, destroy);
 };

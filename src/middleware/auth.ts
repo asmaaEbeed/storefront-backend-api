@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { makeUserModel } from '../models/users'
+import { authenticate } from '../services/auth'
 
-const userModel = new makeUserModel()
+const authenticateModel = new authenticate()
 
 
 export function authMiddleware(req: Request, res: Response, next:NextFunction) {
@@ -9,7 +9,7 @@ export function authMiddleware(req: Request, res: Response, next:NextFunction) {
         const token = req.headers['authorization']?.split(' ')[1];
         if(!token) throw new Error("Invalid token");
 
-        const user = userModel.verify(token);
+        const user = authenticateModel.verify(token);
         console.log("user");
         console.log(user);
 
