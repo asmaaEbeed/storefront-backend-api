@@ -174,20 +174,17 @@ Bellow are the environmental variables that needs to be set in a `.env` file. Th
 ```bash
 # .env
 
-NODE_ENV=development
 PORT=3000
 
-DB_NAME = shopping
-DB_NAME_TEST = shopping_test
-DB_HOST = localhost
-DB_PORT = 5432
-DB_USER = shopping_user
-DB_PASS= password123
+POSTGRES_DB = shopping
+POSTGRES_TEST_DB = shopping_test
+POSTGRES_HOST = localhost
+POSTGRES_USER = shopping_user
+POSTGRES_PASSWORD= password123
 BCRYPT_PASSWORD=my-name-is-enow-2021
 SALT_ROUNDS=10
-TOKEN_TEST = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.J8BgsyqA3Y6F71NXbfuYIfRVuvRa_qb08RStxrCVhlQ
-JWT_SECRET = 5ae8adc9731627905ebf0905dbe4a114ba7d8354ae1796772dfa523a2142761b78d48cbfcd98000bb94fbdbd8147f30de6b3484c3a060d389068204df6a50630
-ENVI = dev
+TOKEN_SECRET=secret-token
+ENV = dev
 ```
 
 ## Start App
