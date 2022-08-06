@@ -64,7 +64,7 @@ Here are some of the few packages that were installed.
 `npm i --save-dev @types/supertest`
 
 ## Set up Database
-
+check REQUIREMENTS.md file
 ### Create Databases
 
 We shall create the dev and test database.
@@ -83,50 +83,6 @@ We shall create the dev and test database.
     - `\c shopping_test`
     - `GRANT ALL PRIVILEGES ON DATABASE shopping_test TO shopping_user;`
 
-### Database Schema
-
-    -user schema
-
-    ```sql
-    CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    firstName VARCHAR(50),
-    lastName VARCHAR(50),
-    password VARCHAR(30),
-    email VARCHAR(50) UNIQUE
-    );
-    ```
-
-    - Product Schema
-
-    ```sql
-    CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50),
-    price VARCHAR(50)
-    );
-    ```
-
-    - Order Schema
-
-    ```sql
-    CREATE TABLE orders (
-    id SERIAL PRIMARY KEY,
-    status VARCHAR(64) NOT NULL,
-    user_id bigint REFERENCES users(id)
-    );
-    ```
-
-    -Order Product Schema (Many-to-Many relationship)
-
-    ```sql
-    CREATE TABLE order_products (
-    id SERIAL PRIMARY KEY,
-    quantity integer,
-    order_id bigint REFERENCES orders(id),
-    product_id bigint REFERENCES products(id)
-    );
-    ```
 
 ### Migrate Database
 

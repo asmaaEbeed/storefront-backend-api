@@ -36,9 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var auth_1 = require("../middleware/auth");
-var auth_2 = require("../services/auth");
-var authService = new auth_2.authenticate();
+var auth_1 = require("../services/auth");
+var authService = new auth_1.authenticate();
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userData, e_1;
     return __generator(this, function (_a) {
@@ -89,7 +88,7 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 var auth_routes = function (app) {
-    app.post('/register', auth_1.authMiddleware, create);
-    app.post('/login', auth_1.authMiddleware, login);
+    app.post('/register', create);
+    app.post('/login', login);
 };
 exports.default = auth_routes;

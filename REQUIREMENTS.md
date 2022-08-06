@@ -4,6 +4,50 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 
+### Database Schema
+
+    -user schema
+
+    ```sql
+    CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    password VARCHAR(30),
+    email VARCHAR(50) UNIQUE
+    );
+    ```
+
+    - Product Schema
+
+    ```sql
+    CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50),
+    price VARCHAR(50)
+    );
+    ```
+
+    - Order Schema
+
+    ```sql
+    CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    status VARCHAR(64) NOT NULL,
+    user_id bigint REFERENCES users(id)
+    );
+    ```
+
+    -Order Product Schema (Many-to-Many relationship)
+
+    ```sql
+    CREATE TABLE order_products (
+    id SERIAL PRIMARY KEY,
+    quantity integer,
+    order_id bigint REFERENCES orders(id),
+    product_id bigint REFERENCES products(id)
+    );
+    ```
 
 
 ## API Endpoints
@@ -80,6 +124,22 @@ Token is unauthorized
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+#### order_products
+- id
+- quantity
+- order_id
+- product_id
+
+
+## Test
+
+Screens from successfull test 
+![Add product to order](./apis-postman/test1.png)
+
+![Add product to order](./apis-postman/test2.jpg)
+
+
 
 
 

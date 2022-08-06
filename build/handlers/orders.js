@@ -40,34 +40,48 @@ var auth_1 = require("../middleware/auth");
 var order_1 = require("../models/order");
 var store = new order_1.OrderStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orders;
+    var orders, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
                 orders = _a.sent();
                 res.json(orders);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(500);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 // const bookModel_routes = (app: express.Application) => {
 var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var order;
+    var order, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log(_req.params);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, store.showOrder(_req.params.id)];
             case 1:
                 order = _a.sent();
                 res.json(order);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var order, newOrder, err_1;
+    var order, newOrder, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -82,16 +96,16 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(newOrder);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orderId, productId, quantity, addedProduct, err_2;
+    var orderId, productId, quantity, addedProduct, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -107,16 +121,16 @@ var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0,
                 res.json(addedProduct);
                 return [3 /*break*/, 4];
             case 3:
-                err_2 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400);
-                res.json(err_2);
+                res.json(err_4);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var active = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, order, err_3;
+    var userId, order, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -128,16 +142,16 @@ var active = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(order);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
+                err_5 = _a.sent();
                 res.status(500);
-                res.json(err_3);
+                res.json(err_5);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted, err_4;
+    var deleted, err_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -148,9 +162,9 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 res.json(deleted);
                 return [3 /*break*/, 3];
             case 2:
-                err_4 = _a.sent();
+                err_6 = _a.sent();
                 res.status(400);
-                res.json(err_4);
+                res.json(err_6);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

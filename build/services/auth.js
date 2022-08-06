@@ -60,17 +60,6 @@ if (!PEPPER || !SALT_ROUNDS || !TOKEN_SECRET)
 var authenticate = /** @class */ (function () {
     function authenticate() {
     }
-    // async checkExist(params: LoginParams): Promise<Number> {
-    //   try{
-    //     const conn = await Client.connect()
-    //     const sqlEmail = `SELECT * FROM users WHERE email=$1`
-    //     const emailResult = await conn.query(sqlEmail,[params.email])
-    //     const result = emailResult.rows.length;
-    //     return result;
-    //   } catch(err) {
-    //     throw new Error(`Unable create user (${params.email}): ${err}`)
-    //   }
-    // }
     authenticate.prototype.create = function (u) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, hash, result, user, token, err_1;
@@ -130,10 +119,6 @@ var authenticate = /** @class */ (function () {
                         return [2 /*return*/, { token: token, id: user.id }];
                     case 5:
                         err_2 = _b.sent();
-                        // console.log(user)
-                        // if (bcrypt.compareSync(password + PEPPER, user.password)) {
-                        //   return user
-                        // }
                         throw new Error("Could not login ".concat(params.email, ". Error: ").concat(err_2));
                     case 6:
                         conn.release();

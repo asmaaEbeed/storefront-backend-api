@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt'
-import { Connection } from 'pg'
 import Client from '../database'
 import jwt from 'jsonwebtoken'
 
@@ -21,19 +20,7 @@ type LoginParams = {
 }
 
 export class authenticate {
-  // async checkExist(params: LoginParams): Promise<Number> {
-  //   try{
-
-  //     const conn = await Client.connect()
-  //     const sqlEmail = `SELECT * FROM users WHERE email=$1`
-  //     const emailResult = await conn.query(sqlEmail,[params.email])
-  //     const result = emailResult.rows.length;
-  //     return result;
-  //   } catch(err) {
-  //     throw new Error(`Unable create user (${params.email}): ${err}`)
-  //   }
-      
-  // }
+  
   async create(u: User) {
     const conn = await Client.connect()
     try {
@@ -77,12 +64,6 @@ export class authenticate {
       const token = jwt.sign(user, TOKEN_SECRET!)
       return {token, id: user.id}
     } catch (err) {
-      // console.log(user)
-
-      // if (bcrypt.compareSync(password + PEPPER, user.password)) {
-      //   return user
-      // }
-
       throw new Error(`Could not login ${params.email}. Error: ${err}`)
     } finally {
       conn.release()

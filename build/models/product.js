@@ -129,7 +129,7 @@ var ProductStore = /** @class */ (function () {
     };
     ProductStore.prototype.update = function (id, product) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, result;
+            var connection, result, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.default.connect()];
@@ -137,17 +137,20 @@ var ProductStore = /** @class */ (function () {
                         connection = _a.sent();
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, , 4, 5]);
-                        return [4 /*yield*/, connection.query("UPDATE products SET name = $1, price = $2 WHERE id=$3 RETURNING *", [product.name, product.price, product.id])];
+                        _a.trys.push([2, 4, 5, 6]);
+                        return [4 /*yield*/, connection.query('UPDATE products SET name = $1, price = $2 WHERE id=$3 RETURNING *', [product.name, product.price, product.id])];
                     case 3:
                         result = _a.sent();
                         if (result.rowCount === 0)
-                            throw ("Product ".concat(id, " not found."));
+                            throw "Product ".concat(id, " not found.");
                         return [2 /*return*/, result.rows[0]];
                     case 4:
+                        err_4 = _a.sent();
+                        throw new Error("Cannot update this product: ".concat(err_4));
+                    case 5:
                         connection.release();
                         return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -161,8 +164,10 @@ var ProductStore = /** @class */ (function () {
                     case 1:
                         connection = _a.sent();
                         try {
-                            result = connection.query("DELETE FROM products WHERE id = $1", [id]);
-                            return [2 /*return*/];
+                            result = connection.query('DELETE FROM products WHERE id = $1', [id]);
+                        }
+                        catch (err) {
+                            throw new Error("Cannot update this product: ".concat(err));
                         }
                         finally {
                             connection.release();

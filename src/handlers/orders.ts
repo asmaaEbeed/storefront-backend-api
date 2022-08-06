@@ -5,16 +5,27 @@ import { Order, OrderStore } from '../models/order'
 const store = new OrderStore()
 
 const index = async (_req: Request, res: Response) => {
-  const orders = await store.index()
-  res.json(orders)
+  try{
+
+    const orders = await store.index()
+    res.json(orders)
+  } catch(err){
+    res.status(500)
+    res.json(err)
+  }
 }
 
 // const bookModel_routes = (app: express.Application) => {
 
 const show = async (_req: Request, res: Response) => {
-  console.log(_req.params)
-  const order = await store.showOrder(_req.params.id)
-  res.json(order)
+  try {
+
+    const order = await store.showOrder(_req.params.id)
+    res.json(order)
+  } catch (err){
+    res.status(400)
+    res.json(err)
+  }
 }
 
 const create = async (req: Request, res: Response) => {

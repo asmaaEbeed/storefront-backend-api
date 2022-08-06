@@ -40,33 +40,45 @@ var auth_1 = require("../middleware/auth");
 var users_1 = require("../models/users");
 var userStore = new users_1.makeUserModel();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userStore.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, userStore.index()];
             case 1:
                 users = _a.sent();
                 res.json(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user;
+    var user, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log(_req.params);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, userStore.showUser(_req.params.id)];
             case 1:
                 user = _a.sent();
                 res.json(user);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var edit = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, editedUser, err_1;
+    var user, editedUser, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -83,31 +95,16 @@ var edit = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
                 res.json(editedUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-// const create = async (req: Request, res: Response) => {
-//   try {
-//     const user: Omit<User, 'id'> = {
-//       firstName: req.body.firstName,
-//       lastName: req.body.lastName,
-//       password: req.body.password,
-//       email: req.body.email
-//     }
-//     const newUser = await userStore.create(user)
-//     res.json(newUser)
-//   } catch (err) {
-//     res.status(400)
-//     res.json(err)
-//   }
-// }
 var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted, err_2;
+    var deleted, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -118,9 +115,9 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 res.json(deleted);
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400);
-                res.json(err_2);
+                res.json(err_4);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -129,7 +126,6 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
 var user_routes = function (app) {
     app.get('/users', auth_1.authMiddleware, index);
     app.get('/user/:id', auth_1.authMiddleware, show);
-    // app.post('/user', authMiddleware, create)
     app.put('/user/:id', auth_1.authMiddleware, edit);
     app.delete('/user', auth_1.authMiddleware, destroy);
 };

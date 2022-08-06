@@ -103,60 +103,9 @@ var makeUserModel = /** @class */ (function () {
             });
         });
     };
-    // async create(u: User) {
-    //   const conn = await Client.connect();
-    //   try {
-    //     // const sqlEmail = `SELECT * FROM users WHERE email=$1`
-    //     // const emailValidity = await conn.query(sqlEmail, [u.email]);
-    //     // console.log(emailValidity.rows[0]);
-    //     // if (emailValidity.rows[0]) {
-    //     //   console.log("build");
-    //     //   conn.release();
-    //     //   throw new Error (`User ${u.email} already exist...`)
-    //     // }
-    //       // @ts-ignore
-    //       const sql = `INSERT INTO users (firstName, lastName, password, email) VALUES($1, $2, $3, $4) RETURNING *`
-    //       // const hash = bcrypt.hashSync(u.password + PEPPER, Number(SALT_ROUNDS))
-    //       const result = await conn.query(sql, [u.firstName, u.lastName, u.password, u.email])
-    //       console.log('inserted successfully')
-    //       const user = result.rows[0]
-    //       // const token = jwt.sign(user, TOKEN_SECRET!)
-    //       return user
-    //   } catch (err) {
-    //     throw new Error(`unable create user (${u.email}): ${err}`)
-    //   } finally {
-    //     conn.release()
-    //   }
-    // }
-    // async authenticate(params: LoginParams) {
-    //   const conn = await Client.connect()
-    //   try {
-    //     const sql = 'SELECT * FROM users WHERE email=($1)'
-    //     const result = await conn.query(sql, [params.email])
-    //     console.log(params.password + PEPPER)
-    //     if (result.rowCount === 0) throw new Error("Wrong user name or password");
-    //       const { password: hashed, ...user } = result.rows[0]
-    //       const isValid = await bcrypt.compare(params.password + PEPPER, hashed)
-    //       if (!isValid) throw new Error('Wrong userNameor password')
-    //       const token = jwt.sign(user, TOKEN_SECRET!)
-    //       return token
-    //   }
-    //       // console.log(user)
-    //       // if (bcrypt.compareSync(password + PEPPER, user.password)) {
-    //       //   return user
-    //       // }
-    //   catch (err) {
-    //     throw new Error(`Could not login ${params.email}. Error: ${err}`)
-    //   } finally {
-    //     conn.release()
-    //   }
-    // }
-    // verify(token: string) {
-    //   return jwt.verify(token, TOKEN_SECRET!)
-    // }
     makeUserModel.prototype.update = function (id, user) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, result;
+            var connection, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.default.connect()];
@@ -164,7 +113,7 @@ var makeUserModel = /** @class */ (function () {
                         connection = _a.sent();
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, , 4, 5]);
+                        _a.trys.push([2, 4, 5, 6]);
                         return [4 /*yield*/, connection.query('UPDATE users SET firstName = $1, lastName = $2, email = $3 WHERE id=$4 RETURNING *', [user.firstName, user.lastName, user.email, user.id])];
                     case 3:
                         result = _a.sent();
@@ -172,9 +121,12 @@ var makeUserModel = /** @class */ (function () {
                             throw "User ".concat(id, " not found.");
                         return [2 /*return*/, result.rows[0]];
                     case 4:
+                        err_3 = _a.sent();
+                        throw new Error("Could not update user ".concat(id, ". Error: ").concat(err_3));
+                    case 5:
                         connection.release();
                         return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -189,7 +141,9 @@ var makeUserModel = /** @class */ (function () {
                         connection = _a.sent();
                         try {
                             result = connection.query('DELETE FROM users WHERE id = $1', [id]);
-                            return [2 /*return*/];
+                        }
+                        catch (err) {
+                            throw new Error("Could not remove user ".concat(id, ". Error: ").concat(err));
                         }
                         finally {
                             connection.release();

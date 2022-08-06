@@ -188,7 +188,7 @@ var OrderStore = /** @class */ (function () {
     };
     OrderStore.prototype.updateOrder = function (id, status) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, result;
+            var connection, result, err_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.default.connect()];
@@ -196,17 +196,20 @@ var OrderStore = /** @class */ (function () {
                         connection = _a.sent();
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, , 4, 5]);
-                        return [4 /*yield*/, connection.query("UPDATE orders SET status=$2 WHERE id=$1 RETURNING *", [id, status])];
+                        _a.trys.push([2, 4, 5, 6]);
+                        return [4 /*yield*/, connection.query('UPDATE orders SET status=$2 WHERE id=$1 RETURNING *', [id, status])];
                     case 3:
                         result = _a.sent();
                         if (result.rowCount === 0)
-                            throw ("order ".concat(id, " not found."));
+                            throw "order ".concat(id, " not found.");
                         return [2 /*return*/, result.rows[0]];
                     case 4:
+                        err_6 = _a.sent();
+                        throw new Error("Cannot update this order: ".concat(err_6));
+                    case 5:
                         connection.release();
                         return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -220,8 +223,10 @@ var OrderStore = /** @class */ (function () {
                     case 1:
                         connection = _a.sent();
                         try {
-                            result = connection.query("DELETE FROM orders WHERE id = $1", [id]);
-                            return [2 /*return*/];
+                            result = connection.query('DELETE FROM orders WHERE id = $1', [id]);
+                        }
+                        catch (err) {
+                            throw new Error("Cannot Delete this order: ".concat(err));
                         }
                         finally {
                             connection.release();

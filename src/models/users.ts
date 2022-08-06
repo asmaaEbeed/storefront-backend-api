@@ -1,7 +1,4 @@
-import bcrypt from 'bcrypt'
-import { Connection } from 'pg'
 import Client from '../database'
-import jwt from 'jsonwebtoken'
 
 const { BCRYPT_PASSWORD: PEPPER, SALT_ROUNDS, TOKEN_SECRET } = process.env
 
@@ -55,6 +52,8 @@ export class makeUserModel {
 
       if (result.rowCount === 0) throw `User ${id} not found.`
       return result.rows[0]
+    } catch (err) {
+      throw new Error(`Could not update user ${id}. Error: ${err}`)
     } finally {
       connection.release()
     }
@@ -64,7 +63,8 @@ export class makeUserModel {
     const connection = await Client.connect()
     try {
       const result = connection.query('DELETE FROM users WHERE id = $1', [id])
-      return
+    } catch (err) {
+      throw new Error(`Could not remove user ${id}. Error: ${err}`)
     } finally {
       connection.release()
     }
